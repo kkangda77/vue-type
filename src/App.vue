@@ -1,17 +1,50 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div>
+    <input type="text" v-model="message" />
+    <button @click="showAlert(event)">show</button>
+    <div>{{ message }}</div>
+    <div v-for="item in data" :key="item.id">
+      <div>{{ item }}</div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { defineComponent, Ref, ref } from 'vue';
+
+interface Todo {
+  userId: number;
+  id: number;
+  title: string;
+  completed: boolean;
+}
 
 export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: {},
+  setup() {
+    const message = ref('');
+    const showAlert = (event: string) => {
+      message.value = event;
+    };
+    const apiUrl = 'https://jsonplaceholder.typicode.com/todos';
+    const data: Ref<Todo[]> = ref([]);
+
+    const fetchTodos = async () => {
+      const response = await fetch(apiUrl);
+      const res = await response.json();
+      return res;
+    };
+    fetchTodos()
+      .then((todos) => (data.value = todos))
+      .catch((err) => console.log(err));
+
+    return {
+      message,
+      showAlert,
+      data,
+    };
+  },
 });
 </script>
 
