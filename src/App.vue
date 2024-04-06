@@ -1,60 +1,52 @@
 <template>
-  <div>
-    <input type="text" v-model="message" />
-    <button @click="showAlert(event)">show</button>
-    <div>{{ message }}</div>
-    <div v-for="item in data" :key="item.id">
-      <div>{{ item }}</div>
+  <div class="app">
+    <div style="display: flex; justify-content: space-around">
+      <h2 @click="showList(0)">TodoList</h2>
+      <h2 @click="showList(1)">JobList</h2>
     </div>
+    <TodoList v-if="tabs === 0" :todos="todos" />
+    <JobList v-if="tabs === 1" :jobs="job" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, Ref, ref } from 'vue';
-
-interface Todo {
-  userId: number;
-  id: number;
-  title: string;
-  completed: boolean;
-}
+import { job } from './libs/data';
+import { Todo } from './types/Todo';
+import { fetchTodos } from './libs/api';
+import TodoList from './components/TodoList.vue';
+import JobList from './components/JobList.vue';
 
 export default defineComponent({
   name: 'App',
-  components: {},
+  components: { TodoList, JobList },
   setup() {
-    const message = ref('');
-    const showAlert = (event: string) => {
-      message.value = event;
-    };
-    const apiUrl = 'https://jsonplaceholder.typicode.com/todos';
-    const data: Ref<Todo[]> = ref([]);
+    const todos: Ref<Todo[]> = ref([]);
+    const tabs = ref<number>(0);
 
-    const fetchTodos = async () => {
-      const response = await fetch(apiUrl);
-      const res = await response.json();
-      return res;
+    const showList = (tab: number) => {
+      tabs.value = tab;
     };
+
     fetchTodos()
-      .then((todos) => (data.value = todos))
+      .then((res) => {
+        todos.value = res;
+        todos.value.map((i) => {
+          if (i.completed) {
+            i.completed = 'complete';
+          } else {
+            i.completed = 'incomplete';
+          }
+        });
+      })
       .catch((err) => console.log(err));
 
     return {
-      message,
-      showAlert,
-      data,
+      todos,
+      showList,
+      tabs,
+      job,
     };
   },
 });
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
