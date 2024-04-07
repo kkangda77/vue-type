@@ -1,6 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
 
+@font-face {
+  font-family: HyliaSerif;
+  src: url('HyliaSerifBeta-Regular.otf') format('opentype');
+}
+
 body {
   font-family: 'Open Sans';
   background: #ece6d9;
+  margin: 0;
+}
+
+h1 {
+  font-family: HyliaSerif;
+  letter-spacing: 4px;
+}
+h4 {
+  font-family: HyliaSerif;
+  letter-spacing: 4px;
+  color: chocolate;
+}
+
+button {
+  margin: 0 10px;
+  color: #1195c9;
+  border: 3px solid #1195c9;
+  background: #d5f0ff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+button:hover {
+  background-color: rebeccapurple;
+  color: #fff;
 }

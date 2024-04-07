@@ -4,3 +4,4 @@ export interface Todo<T> {
   title: string;
   completed: T;
 }
+export type OrderTerm = 'title' | 'completed';

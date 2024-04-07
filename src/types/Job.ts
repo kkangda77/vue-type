@@ -4,3 +4,4 @@ export interface Job {
   salary: number;
   id: string;
 }
+export type OrderTerm = 'title' | 'salary' | 'location';

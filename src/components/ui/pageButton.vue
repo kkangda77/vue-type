@@ -49,12 +49,12 @@ export default defineComponent({
   height: 50px;
 
   appearance: none;
-  border: none;
+  border: 3px solid #1195c9;
   outline: none;
   cursor: pointer;
 
   background-color: #fff;
-
+  padding: 5px;
   margin: 5px;
   transition: 0.4s;
 
@@ -63,12 +63,12 @@ export default defineComponent({
 }
 
 .pagenumbers button:hover {
-  background-color: aqua;
+  background-color: rebeccapurple;
   color: #fff;
 }
 
 .pagenumbers button.active {
-  background-color: aqua;
+  background-color: rebeccapurple;
   box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.2);
   color: #fff;
 }

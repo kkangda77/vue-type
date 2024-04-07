@@ -1,6 +1,7 @@
 <template>
   <div class="job-list">
-    <ul>
+    <h4>Ordered by {{ order }}</h4>
+    <transition-group name="list" tag="ul">
       <li v-for="todo in displayItems" :key="todo.id">
         <div class="todo">
           <h2>{{ todo.title }}</h2>
@@ -9,9 +10,10 @@
           </h2>
         </div>
       </li>
-    </ul>
+    </transition-group>
     <div class="pagination">
-      <button @click="prevPage" :disabled="curPage === 1">pre</button>
+      <button @click="goToFirstPage" :disabled="curPage === 1">《</button>
+      <button @click="prevPage" :disabled="curPage === 1">〈</button>
       <page-button
         v-for="n in visiblePageButtons"
         :key="n"
@@ -19,14 +21,15 @@
         :curPage="curPage"
         @changePage="changePage"
       />
-      <button @click="nextPage" :disabled="curPage === pageNum">next</button>
+      <button @click="nextPage" :disabled="curPage === pageNum">〉</button>
+      <button @click="goToLastPage" :disabled="curPage === pageNum">》</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, PropType, ref } from 'vue';
-import { Todo } from '@/types/Todo';
+import { Todo, OrderTerm } from '@/types/Todo';
 import PageButton from '../components/ui/pageButton.vue';
 
 export default defineComponent({
@@ -42,6 +45,10 @@ export default defineComponent({
       type: Number as PropType<number>,
       required: true,
     },
+    order: {
+      type: String as PropType<OrderTerm>,
+      required: true,
+    },
   },
   setup(props) {
     const curPage = ref<number>(1);
@@ -50,7 +57,7 @@ export default defineComponent({
     );
 
     const visiblePageButtons = computed(() => {
-      const PAGE_BUTTON_COUNT = 5; // 화면에 표시할 페이지 버튼 개수
+      const PAGE_BUTTON_COUNT = 10; // 화면에 표시할 페이지 버튼 개수
       const halfCount = Math.floor(PAGE_BUTTON_COUNT / 2); // 페이지 버튼 개수의 절반
       let startPage = Math.max(1, curPage.value - halfCount); // 시작 페이지
       const endPage = Math.min(
@@ -79,6 +86,14 @@ export default defineComponent({
       }
     };
 
+    const goToFirstPage = () => {
+      curPage.value = 1;
+    };
+
+    const goToLastPage = () => {
+      curPage.value = pageNum.value;
+    };
+
     const nextPage = () => {
       if (curPage.value < pageNum.value) {
         curPage.value++;
@@ -99,6 +114,8 @@ export default defineComponent({
       nextPage,
       displayItems,
       visiblePageButtons,
+      goToFirstPage,
+      goToLastPage,
     };
   },
 });
@@ -124,10 +141,10 @@ export default defineComponent({
   text-transform: capitalize;
 }
 .blue {
-  color: blue;
+  color: rebeccapurple;
 }
 .red {
-  color: red;
+  color: chocolate;
 }
 .pagination {
   display: flex;
@@ -141,26 +158,7 @@ export default defineComponent({
 .pagination button {
   margin: 0 5px;
 }
-button {
-  width: 50px;
-  height: 50px;
-
-  appearance: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-
-  background-color: #44eeaa;
-
-  margin: 5px;
-  transition: 0.4s;
-
-  color: #fff;
-  font-size: 18px;
-  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-}
-button:hover {
-  background-color: aqua;
+.list-move {
+  transition: all 1s;
 }
 </style>
