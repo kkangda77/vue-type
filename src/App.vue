@@ -14,8 +14,8 @@ import { defineComponent, Ref, ref } from 'vue';
 import { job } from './libs/data';
 import { Todo } from './types/Todo';
 import { fetchTodos } from './libs/api';
-import TodoList from './components/TodoList.vue';
-import JobList from './components/JobList.vue';
+import TodoList from './page/TodoList.vue';
+import JobList from './page/JobList.vue';
 
 export default defineComponent({
   name: 'App',
