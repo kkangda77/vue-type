@@ -21,25 +21,23 @@ export default defineComponent({
   name: 'App',
   components: { TodoList, JobList },
   setup() {
-    const todos: Ref<Todo[]> = ref([]);
+    const todos: Ref<Todo<string>[]> = ref([]);
     const tabs = ref<number>(0);
 
     const showList = (tab: number) => {
       tabs.value = tab;
     };
 
-    fetchTodos()
-      .then((res) => {
-        todos.value = res;
-        todos.value.map((i) => {
-          if (i.completed) {
-            i.completed = 'complete';
-          } else {
-            i.completed = 'incomplete';
-          }
-        });
-      })
-      .catch((err) => console.log(err));
+    fetchTodos().then((res) => {
+      todos.value = res;
+      todos.value.map((i) => {
+        if (i.completed) {
+          i.completed = 'complete';
+        } else {
+          i.completed = 'incomplete';
+        }
+      });
+    });
 
     return {
       todos,

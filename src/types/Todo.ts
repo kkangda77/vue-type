@@ -1,6 +1,6 @@
-export interface Todo {
+export interface Todo<T> {
   userId: number;
   id: number;
   title: string;
-  completed: boolean | string;
+  completed: T;
 }

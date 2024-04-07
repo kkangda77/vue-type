@@ -20,7 +20,7 @@ import { Todo } from '../types/Todo';
 export default defineComponent({
   props: {
     todos: {
-      type: Array as PropType<Todo[]>,
+      type: Array as PropType<Todo<string>[]>,
     },
   },
   setup() {
